@@ -8,9 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    var activityIndicator: UIActivityIndicatorView!
-    
+   
     private let tableView: UITableView = {
        let tv = UITableView()
         tv.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseId)
@@ -18,10 +16,10 @@ class ViewController: UIViewController {
         return tv
     }()
     
-    let searchController = UISearchController(searchResultsController: nil)
+    let refreshControl = UIRefreshControl()
     
-    private var viewModels = [NewsViewModel]()
-
+    let searchController = UISearchController(searchResultsController: nil)
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,35 +29,12 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        activityIndicator = UIActivityIndicatorView()
-        activityIndicator.center = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = .large
-        
-        view.addSubview(activityIndicator)
-        
         creatSearchBar()
         
-        showActivityIndicator(show: true)
-        
-        NetworkManager.shared.getStories { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.viewModels = response.compactMap({
-                    NewsViewModel(title: $0.title,
-                                  subtitle: $0.description ?? "NO Description",
-                                  author: $0.author,
-                                  imageURL: URL(string: $0.urlToImage ?? ""))
-                })
-                
-                DispatchQueue.main.async {
-                    self?.showActivityIndicator(show: false)
-                    self?.tableView.reloadData()
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(self.refreshControl)
+       
     }
     
     override func viewDidLayoutSubviews() {
@@ -73,12 +48,19 @@ class ViewController: UIViewController {
         searchController.searchBar.setValue("Отмена", forKey: "cancelButtonText")
         searchController.searchBar.placeholder = "Поиск..."
     }
+  
+    private func fetchApi() {
+        Request.shared.fetchApi {
+            print("Refreshing success")
+        }
+    }
     
-    func showActivityIndicator(show: Bool) {
-        if show {
-            activityIndicator.startAnimating()
-        } else {
-            activityIndicator.stopAnimating()
+    @objc func refresh() {
+        if refreshControl.isRefreshing {
+            
+            self.fetchApi()
+            
+            refreshControl.endRefreshing()
         }
     }
 }
@@ -87,13 +69,13 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModels.count
+        return Request.shared.viewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseId, for: indexPath) as? TableViewCell else { fatalError() }
         
-        cell.configure(with: viewModels[indexPath.row])
+        cell.configure(with: Request.shared.viewModels[indexPath.row])
         
         cell.usageActionHandler = {
             UIView.setAnimationsEnabled(false)
@@ -122,23 +104,10 @@ extension ViewController: UISearchBarDelegate {
             return
         }
         
-        NetworkManager.shared.getStoriesSeqrch(with: text) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.viewModels = response.compactMap({
-                    NewsViewModel(title: $0.title,
-                                  subtitle: $0.description ?? "NO Description",
-                                  author: $0.author,
-                                  imageURL: URL(string: $0.urlToImage ?? ""))
-                })
-                
-                DispatchQueue.main.async {
-                    self?.showActivityIndicator(show: false)
-                    self?.tableView.reloadData()
-                    self?.searchController.dismiss(animated: true, completion: nil)
-                }
-            case .failure(let error):
-                print(error)
+        Request.shared.searchFetchApi(text: text) { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+                self?.searchController.dismiss(animated: true, completion: nil)
             }
         }
     }

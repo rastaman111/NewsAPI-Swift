@@ -13,6 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        let barButton = UIBarButtonItem.appearance()
+        barButton.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .highlighted)
+        barButton.setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -1000.0, vertical: 0), for: .default)
+        
         return true
     }
 

@@ -17,6 +17,8 @@
 		A8E76D8D268B5654006DF6B1 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E76D8C268B5654006DF6B1 /* TableViewCell.swift */; };
 		A8E76D8F268B6222006DF6B1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E76D8E268B6222006DF6B1 /* Extensions.swift */; };
 		A8E76D91268C584B006DF6B1 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E76D90268C584B006DF6B1 /* ImageCache.swift */; };
+		A8E76DBA268F2ECD006DF6B1 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E76DB9268F2ECD006DF6B1 /* SplashScreenViewController.swift */; };
+		A8E76DBC268F2F59006DF6B1 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E76DBB268F2F59006DF6B1 /* Request.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		A8E76D8C268B5654006DF6B1 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		A8E76D8E268B6222006DF6B1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A8E76D90268C584B006DF6B1 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		A8E76DB9268F2ECD006DF6B1 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
+		A8E76DBB268F2F59006DF6B1 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,9 +70,11 @@
 			children = (
 				A8E76D76268B50C9006DF6B1 /* AppDelegate.swift */,
 				A8E76D78268B50C9006DF6B1 /* SceneDelegate.swift */,
+				A8E76DB9268F2ECD006DF6B1 /* SplashScreenViewController.swift */,
 				A8E76D7A268B50C9006DF6B1 /* ViewController.swift */,
 				A8E76D8C268B5654006DF6B1 /* TableViewCell.swift */,
 				A8E76D8A268B50F5006DF6B1 /* NetworkManager.swift */,
+				A8E76DBB268F2F59006DF6B1 /* Request.swift */,
 				A8E76D8E268B6222006DF6B1 /* Extensions.swift */,
 				A8E76D90268C584B006DF6B1 /* ImageCache.swift */,
 				A8E76D7C268B50C9006DF6B1 /* Main.storyboard */,
@@ -151,10 +157,12 @@
 			files = (
 				A8E76D8D268B5654006DF6B1 /* TableViewCell.swift in Sources */,
 				A8E76D8F268B6222006DF6B1 /* Extensions.swift in Sources */,
+				A8E76DBA268F2ECD006DF6B1 /* SplashScreenViewController.swift in Sources */,
 				A8E76D8B268B50F5006DF6B1 /* NetworkManager.swift in Sources */,
 				A8E76D7B268B50C9006DF6B1 /* ViewController.swift in Sources */,
 				A8E76D77268B50C9006DF6B1 /* AppDelegate.swift in Sources */,
 				A8E76D91268C584B006DF6B1 /* ImageCache.swift in Sources */,
+				A8E76DBC268F2F59006DF6B1 /* Request.swift in Sources */,
 				A8E76D79268B50C9006DF6B1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

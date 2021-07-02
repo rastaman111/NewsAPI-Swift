@@ -66,6 +66,7 @@ struct APIResponse: Codable {
 struct APIArticles: Codable {
     let author: String?
     let title: String
+    let publishedAt: String
     let description: String?
     let urlToImage: String?
 }

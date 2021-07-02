@@ -12,12 +12,14 @@ class NewsViewModel {
     let subtitle: String
     let author: String?
     let imageURL: URL?
+    let publishedAt: String
     
-    init(title: String, subtitle: String, author: String?, imageURL: URL?) {
+    init(title: String, subtitle: String, author: String?, imageURL: URL?, publishedAt: String) {
         self.title = title
         self.subtitle = subtitle
         self.author = author
         self.imageURL = imageURL
+        self.publishedAt = publishedAt
     }
 }
 
@@ -45,7 +47,15 @@ class TableViewCell: UITableViewCell {
     
     private let authorLabel: UILabel = {
         let lbl = UILabel()
-        lbl.numberOfLines = 0
+        lbl.textAlignment = .left
+        lbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
+
+        return lbl
+    }()
+    
+    private let dateLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.textAlignment = .right
         lbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
 
         return lbl
@@ -106,13 +116,16 @@ class TableViewCell: UITableViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(subtitleLabel)
         contentView.addSubview(authorLabel)
+        contentView.addSubview(dateLabel)
         contentView.addSubview(arrowButton)
         
         newImageView.anchor(top: contentView.topAnchor, left: contentView.leftAnchor, bottom: nil, right: contentView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 150)
         
-        authorLabel.anchor(top: newImageView.bottomAnchor, left: contentView.leftAnchor, bottom: nil, right: contentView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        dateLabel.anchor(top:  newImageView.bottomAnchor, left: nil, bottom: nil, right: contentView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 100, height: 0)
         
-        titleLabel.anchor(top: authorLabel.bottomAnchor, left: contentView.leftAnchor, bottom: nil, right: contentView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 70)
+        authorLabel.anchor(top: newImageView.bottomAnchor, left: contentView.leftAnchor, bottom: nil, right: dateLabel.leftAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 5, width: 0, height: 0)
+        
+        titleLabel.anchor(top: newImageView.bottomAnchor, left: contentView.leftAnchor, bottom: nil, right: contentView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 70)
         
         subtitleLabel.anchor(top: titleLabel.bottomAnchor, left: contentView.leftAnchor, bottom: nil, right: contentView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
@@ -136,6 +149,7 @@ class TableViewCell: UITableViewCell {
         titleLabel.text = nil
         subtitleLabel.text = nil
         authorLabel.text = nil
+        dateLabel.text = nil
         newImageView.image = nil
         
         isCollapsed = true
@@ -143,6 +157,16 @@ class TableViewCell: UITableViewCell {
     }
     
     func configure(with viewModel: NewsViewModel) {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let dateGet = dateFormatterGet.date(from: viewModel.publishedAt)
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.locale = .current
+        dateFormatterPrint.calendar = Calendar(identifier: .gregorian)
+        dateFormatterPrint.timeZone = TimeZone.current
+        dateFormatterPrint.dateFormat = "dd.MMM.yyyy"
+        
+        dateLabel.text = dateFormatterPrint.string(from: dateGet!)
         authorLabel.text = viewModel.author
         titleLabel.text = viewModel.title
         subtitleLabel.text = viewModel.subtitle.replacingOccurrences(of: "\\n", with: "\n")
