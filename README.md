@@ -8,9 +8,11 @@
 
 <p>Also used:</p>
 
+<li> SplashScreen</li>
 <li> UITableView</li>
 <li> CustomCell</li>
 <li> DynamicСell</li>
+<li> RefreshControl</li>
 <li> Codable</li>
 <li> Search for API</li>
 <li> Cache Image</li>
